@@ -1,5 +1,6 @@
 package com.example.course.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +31,17 @@ public class UserService {
 	
 	public void delete(Long id) {
 		ur.deleteById(id);
+	}
+	
+	public User update(Long id, User obj) {
+		User user = ur.getById(id);
+		updateData(user, obj);
+		return ur.save(user);
+	}
+
+	private void updateData(User user, User obj) {
+		user.setEmail(obj.getEmail());
+		user.setName(obj.getName());
+		user.setPhone(obj.getPhone());
 	}
 }
