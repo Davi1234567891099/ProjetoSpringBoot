@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -48,9 +50,14 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User user = ur.getById(id);
-		updateData(user, obj);
-		return ur.save(user);
+		try {
+			User user = ur.getById(id);
+			updateData(user, obj);
+			return ur.save(user);
+		}
+		catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User user, User obj) {
